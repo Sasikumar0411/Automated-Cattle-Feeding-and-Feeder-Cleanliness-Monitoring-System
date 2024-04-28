@@ -1,0 +1,51 @@
+// Include necessary libraries
+#include <Servo.h>
+
+// Define pin numbers
+const int feederServoPin = 9;       // Digital pin for feeder servo motor
+const int cleanlinessSensorPin = A0; // Analog pin for cleanliness sensor
+
+// Initialize servo motor object
+Servo feederServo;
+
+void setup() {
+  // Setup servo motor pin as output
+  feederServo.attach(feederServoPin);
+  // Setup cleanliness sensor pin as input
+  pinMode(cleanlinessSensorPin, INPUT);
+
+  // Initialize feeder servo motor position (adjust as needed)
+  feederServo.write(0);
+}
+
+void loop() {
+  // Check cleanliness sensor reading
+  int cleanlinessValue = analogRead(cleanlinessSensorPin);
+
+  // If cleanliness value is below threshold, trigger cleaning mechanism
+  if (cleanlinessValue < 500) {
+    cleanFeeder();
+  } else {
+    // If cleanliness is satisfactory, proceed with feeding
+    feedCattle();
+  }
+
+  // Delay for stability (adjust as needed)
+  delay(1000);
+}
+
+void cleanFeeder() {
+  // Implement cleaning mechanism here (e.g., activate cleaning brush)
+  // Adjust servo motor position for cleaning action (e.g., move to cleaning position)
+  feederServo.write(90); // Example position for cleaning
+  delay(5000); // Example duration for cleaning action
+  feederServo.write(0); // Return to initial position after cleaning
+}
+
+void feedCattle() {
+  // Implement feeding mechanism here (e.g., dispense feed)
+  // Adjust servo motor position for feeding action (e.g., move to feeding position)
+  feederServo.write(180); // Example position for feeding
+  delay(3000); // Example duration for feeding action
+  feederServo.write(0); // Return to initial position after feeding
+}
